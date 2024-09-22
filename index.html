@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body,
+      select {
+        font: 21px Arial, sans-serif;
+      }
+
+      p {
+        margin: 9px 0;
+      }
+
+      #text-content {
+        margin-top: 2.1em;
+        white-space: pre;
+        font: 15px Consolas, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <p>hello world</p>
+    <p>Testing the page is still reacting: <input /></p>
+    <p>
+      <label for="font-name">Choose a font:</label>
+
+      <select name="font-name" id="font-name">
+        <option>Consolas</option>
+        <option>Lucida Console</option>
+        <option>Lucida Sans Typewriter</option>
+        <option>Cascadia Code</option>
+        <option>Courier New</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="font-size">Choose a font:</label>
+
+      <select name="font-size" id="font-size">
+        <option>9</option>
+        <option>10</option>
+        <option>12</option>
+        <option selected>15</option>
+        <option>18</option>
+        <option>21</option>
+      </select>
+    </p>
+
+    <div id="text-content"></div>
+
+    <!-- <script src="dist/bundle.js"></script> -->
+    <script>
+      //   const myWorker = new Worker("worker.js");
+
+      const myWorker = new Worker("dist/bundle.js");
+      const $textContent = document.querySelector("#text-content");
+
+      document.querySelector("#font-name").addEventListener("change", (ev) => {
+        console.log("=== FONT CHANGE", ev, ev.target, ev.target.value);
+        $textContent.style.fontFamily = `${ev.target.value}, monospace`;
+      });
+
+      document.querySelector("#font-size").addEventListener("change", (ev) => {
+        console.log("=== FONT SIZE CHANGE", ev, ev.target, ev.target.value);
+        $textContent.style.fontSize = `${ev.target.value}px`;
+      });
+
+      //   myWorker.onmessage = (e) => {
+      //     console.log("=== GOT MESSAGE", e);
+      //     // result.textContent = e.data;
+      //     // console.log("Message received from worker");
+
+      //     // window.document.body.append(`${arr.join(" ")}`);
+
+      //     // let $div = document.createElement("div");
+
+      //     // $div.textContent = e.data;
+
+      //     // window.document.body.append($div);
+
+      //     $textContent.append(e.data + "\n");
+      //   };
+
+      myWorker.addEventListener("message", (e) => {
+        // console.log("=== GOT MESSAGE", e);
+
+        $textContent.append(e.data + "\n");
+      });
+    </script>
+  </body>
+</html>
